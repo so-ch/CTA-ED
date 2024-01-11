@@ -6,17 +6,17 @@ site: bookdown::bookdown_site
 output: bookdown::bs4_book
 documentclass: book
 bibliography: [book.bib, packages.bib, CTA.bib]
-url: https://cjbarrie.github.io/CTA-ED/
+url: https://marionlieutaud.github.io/CTA-ED/
 cover-image: coverb.png
 description: |
   Online book for ten-week course in "Computational Text Analysis" (PGSP11584)
 link-citations: yes
-github-repo: cjbarrie/CTA-ED
+github-repo: marionlieutaud/CTA-ED
 ---
 
 # "Computational Text Analysis" (PGSP11584) {.unnumbered}
 
-![cover](coverb.png){.cover width="250"} This is the dedicated webpage for the course Computational Text Analysis" [(PGSP11584)](http://www.drps.ed.ac.uk/23-24/dpt/cxpgsp11584.htm) at the University of Edinburgh, taught by Marion Lieutaud and Christopher Barrie, with Aybuke Atalay as teaching assistant (TA). Go to the Course Overview and Introduction tabs for a course overview and introduction to R.
+![cover](coverb.png){.cover width="250"} This is the dedicated webpage for the course Computational Text Analysis" [(PGSP11584)](http://www.drps.ed.ac.uk/23-24/dpt/cxpgsp11584.htm) at the University of Edinburgh, convened by Marion Lieutaud and taught by Marion Lieutaud, Christopher Barrie and Aybuke Atalay (TA). Go to the Course Overview and Introduction tabs for a course overview and introduction to R.
 
 We will be using this online book throughout the course. Each week has a set of essential and recommended readings. The essential readings must be consulted in full prior to the Lecture and Seminar for that week. In addition, you will find online Exercises and examples written in R. This is a "live" book and will be amended and updated during the course itself.
 
