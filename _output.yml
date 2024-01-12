@@ -1,14 +1,14 @@
 bookdown::bs4_book:
   theme:
     primary: "#8b0000"
-  repo: https://github.com/cjbarrie/CTA-ED
+  repo: https://github.com/marionlieutaud/CTA-ED
 bookdown::gitbook:
   css: style.css
   config:
     toc:
       before: |
         <li><a href="./">Computational Text Analysis</a></li>
-    edit: https://github.com/cjbarrie/CTA-ED
+    edit: https://github.com/marionlieutaud/CTA-ED
     download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:
