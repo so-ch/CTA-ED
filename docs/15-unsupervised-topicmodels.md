@@ -16,7 +16,8 @@ In this tutorial, you will learn how to:
 
 Before proceeding, we'll load the packages we will need for this tutorial.
 
-```{r, message=F}
+
+```r
 library(tidyverse) # loads dplyr, ggplot2, and others
 library(stringr) # to handle text elements
 library(tidytext) # includes set of functions useful for manipulating text
@@ -31,7 +32,8 @@ library(quanteda.textmodels)
 ```
 
 
-```{r, message=F, eval=F}
+
+```r
 devtools::install_github("matthewjdenny/preText")
 library(preText)
 ```
@@ -44,27 +46,30 @@ This example is adapted by [Text Mining with R: A Tidy Approach](https://www.tid
 
 Here, we see that Volume of Tocqueville's "Democracy in America" is stored as "815". A separate search reveals that Volume 2 is stored as "816".
 
-```{r, eval=F}
+
+```r
 tocq <- gutenberg_download(c(815, 816), 
                             meta_fields = "author")
 ```
 
 Or we can download the dataset with:
 
-```{r}
+
+```r
 tocq <- readRDS("data/topicmodels/tocq.rds")
 ```
 
 If you're working on this document from your own computer ("locally") you can download the data in the following way:
 
-```{r, eval = F}
-tocq  <- readRDS(gzcon(url("https://github.com/cjbarrie/CTA-ED/blob/main/data/topicmodels/tocq.RDS?raw=true")))
 
+```r
+tocq  <- readRDS(gzcon(url("https://github.com/cjbarrie/CTA-ED/blob/main/data/topicmodels/tocq.RDS?raw=true")))
 ```
 
 Once we have read in these data, we convert it into a different data shape: the document-term-matrix. We also create a new columns, which we call "booknumber" that recordss whether the term in question is from Volume 1 or Volume 2. To convert from tidy into "DocumentTermMatrix" format we can first use `unnest_tokens()` as we have done in past exercises, remove stop words, and then use the `cast_dtm()` function to convert into a "DocumentTermMatrix" object.
 
-```{r}
+
+```r
 tocq_words <- tocq %>%
   mutate(booknumber = ifelse(gutenberg_id==815, "DiA1", "DiA2")) %>%
   unnest_tokens(word, text) %>%
@@ -72,37 +77,76 @@ tocq_words <- tocq %>%
   count(booknumber, word, sort = TRUE) %>%
   ungroup() %>%
   anti_join(stop_words)
+```
 
+```
+## Joining with `by = join_by(word)`
+```
+
+```r
 tocq_dtm <- tocq_words %>%
   cast_dtm(booknumber, word, n)
 
 tm::inspect(tocq_dtm)
 ```
 
+```
+## <<DocumentTermMatrix (documents: 2, terms: 12092)>>
+## Non-/sparse entries: 17581/6603
+## Sparsity           : 27%
+## Maximal term length: 18
+## Weighting          : term frequency (tf)
+## Sample             :
+##       Terms
+## Docs   country democratic government laws nations people power society time
+##   DiA1     357        212        556  397     233    516   543     290  311
+##   DiA2     167        561        162  133     313    360   263     241  309
+##       Terms
+## Docs   united
+##   DiA1    554
+##   DiA2    227
+```
+
 We see here that the data are now stored as a "DocumentTermMatrix." In this format, the matrix records the term (as equivalent of a column) and the document (as equivalent of row), and the number of times the term appears in the given document. Many terms will not appear in the document, meaning that the matrix will be stored as "sparse," meaning there will be a preponderance of zeroes. Here, since we are looking only at two documents that both come from a single volume set, the sparsity is relatively low (only 27%). In most applications, the sparsity will be a lot higher, approaching 99% or more.
 
 Estimating our topic model is then relatively simple. All we need to do if specify how many topics that we want to search for, and we can also set our seed, which is needed to reproduce the same results each time (as the model is a generative probabilistic one, meaning different random iterations will produce different results).
 
-```{r}
 
+```r
 tocq_lda <- LDA(tocq_dtm, k = 10, control = list(seed = 1234))
-
 ```
 
 After this we can extract the per-topic-per-word probabilities, called "β" from the model:
 
-```{r}
+
+```r
 tocq_topics <- tidy(tocq_lda, matrix = "beta")
 
 head(tocq_topics, n = 10)
+```
 
+```
+## # A tibble: 10 × 3
+##    topic term          beta
+##    <int> <chr>        <dbl>
+##  1     1 democratic 0.00855
+##  2     2 democratic 0.0115 
+##  3     3 democratic 0.00444
+##  4     4 democratic 0.0193 
+##  5     5 democratic 0.00254
+##  6     6 democratic 0.00866
+##  7     7 democratic 0.00165
+##  8     8 democratic 0.0108 
+##  9     9 democratic 0.00276
+## 10    10 democratic 0.00334
 ```
 
 We now have data stored as one topic-per-term-per-row. The betas listed here represent the probability that the given term belongs to a given topic. So, here, we see that the term "democratic" is most likely to belong to topic 4. Strictly, this probability represents the probability that the term is generated from the topic in question.
 
 We can then plots the top terms, in terms of beta, for each topic as follows:
 
-```{r}
+
+```r
 tocq_top_terms <- tocq_topics %>%
   group_by(topic) %>%
   top_n(10, beta) %>%
@@ -116,8 +160,9 @@ tocq_top_terms %>%
   facet_wrap(~ topic, scales = "free", ncol = 4) +
   scale_y_reordered() +
   theme_tufte(base_family = "Helvetica")
-
 ```
+
+<img src="15-unsupervised-topicmodels_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 But how do we actually evaluate these topics? Here, the topics all seem pretty similar. 
 
@@ -133,16 +178,41 @@ Given these differences in focus, we might think that a generative model could a
 
 First let's have a look and see whether there really are words obviously distinguishing the two Volumes. 
 
-```{r}
 
+```r
 tidy_tocq <- tocq %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words)
+```
 
+```
+## Joining with `by = join_by(word)`
+```
+
+```r
 ## Count most common words in both
 tidy_tocq %>%
   count(word, sort = TRUE)
+```
 
+```
+## # A tibble: 12,092 × 2
+##    word           n
+##    <chr>      <int>
+##  1 people       876
+##  2 power        806
+##  3 united       781
+##  4 democratic   773
+##  5 government   718
+##  6 time         620
+##  7 nations      546
+##  8 society      531
+##  9 laws         530
+## 10 country      524
+## # ℹ 12,082 more rows
+```
+
+```r
 bookfreq <- tidy_tocq %>%
   mutate(booknumber = ifelse(gutenberg_id==815, "DiA1", "DiA2")) %>%
   mutate(word = str_extract(word, "[a-z']+")) %>%
@@ -165,9 +235,17 @@ ggplot(bookfreq, aes(x = DiA1, y = DiA2, color = abs(DiA1 - DiA2))) +
         strip.text.x = element_blank()) +
   labs(x = "Tocqueville DiA 2", y = "Tocqueville DiA 1") +
   coord_equal()
-
+```
 
 ```
+## Warning: Removed 6173 rows containing missing values (`geom_point()`).
+```
+
+```
+## Warning: Removed 6174 rows containing missing values (`geom_text()`).
+```
+
+<img src="15-unsupervised-topicmodels_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 We see that there do seem to be some marked distinguishing characteristics. In the plot above, for example, we see that more abstract notions of state systems appear with greater frequency in Volume 1 while Volume 2 seems to contain words specific to America (e.g., "north" and "south") with greater frequency. The way to read the above plot is that words positioned further away from the diagonal line appear with greater frequency in one volume versus the other.
 
@@ -176,8 +254,8 @@ We see that there do seem to be some marked distinguishing characteristics. In t
 
 In the below, we first separate the volumes into chapters, then we repeat the same procedure as above. The only difference now is that instead of two documents representing the two full volumes of Tocqueville's work, we now have 132 documents, each representing an individual chapter. Notice now that the sparsity is much increased: around 96%. 
 
-```{r}
 
+```r
 tocq <- tocq %>%
   filter(!is.na(text))
 
@@ -199,42 +277,115 @@ tocq_word_counts <- tocq_chapter_word %>%
   anti_join(stop_words) %>%
   count(document, word, sort = TRUE) %>%
   ungroup()
+```
 
+```
+## Joining with `by = join_by(word)`
+```
+
+```r
 tocq_word_counts
+```
 
+```
+## # A tibble: 69,781 × 3
+##    document word             n
+##    <chr>    <chr>        <int>
+##  1 DiA2_76  united          88
+##  2 DiA2_60  honor           70
+##  3 DiA1_52  union           66
+##  4 DiA2_76  president       60
+##  5 DiA2_76  law             59
+##  6 DiA1_42  jury            57
+##  7 DiA2_76  time            50
+##  8 DiA1_11  township        49
+##  9 DiA1_21  federal         48
+## 10 DiA2_76  constitution    48
+## # ℹ 69,771 more rows
+```
+
+```r
 # Cast into DTM format for LDA analysis
 
 tocq_chapters_dtm <- tocq_word_counts %>%
   cast_dtm(document, word, n)
 
 tm::inspect(tocq_chapters_dtm)
+```
 
+```
+## <<DocumentTermMatrix (documents: 132, terms: 11898)>>
+## Non-/sparse entries: 69781/1500755
+## Sparsity           : 96%
+## Maximal term length: 18
+## Weighting          : term frequency (tf)
+## Sample             :
+##          Terms
+## Docs      country democratic government laws nations people power public time
+##   DiA1_11      10          0         23   19       7     13    19     15    6
+##   DiA1_13      13          5         34    9      12     17    37     15    6
+##   DiA1_20       9          0         25   13       2     14    32     13   10
+##   DiA1_21       4          0         20   29       6     12    20      5    5
+##   DiA1_23      10          0         35    9      24     20    13      4    8
+##   DiA1_31       7         12         10   13       4     30    18     31    6
+##   DiA1_32      10         14         25    6       9     25    11     43    8
+##   DiA1_47      12          2          5    3       3      6     8      0    3
+##   DiA1_56      12          0          3    7      19      3     8      3   22
+##   DiA2_76      11         10         24   39      12     31    27     27   50
+##          Terms
+## Docs      united
+##   DiA1_11     13
+##   DiA1_13     19
+##   DiA1_20     21
+##   DiA1_21     23
+##   DiA1_23     15
+##   DiA1_31     11
+##   DiA1_32     14
+##   DiA1_47      8
+##   DiA1_56     25
+##   DiA2_76     88
 ```
 
 We then re-estimate the topic model with this new DocumentTermMatrix object, specifying k equal to 2. This will enable us to evaluate whether a topic model is able to generatively assign to volume with accuracy.
 
-```{r}
-tocq_chapters_lda <- LDA(tocq_chapters_dtm, k = 2, control = list(seed = 1234))
 
+```r
+tocq_chapters_lda <- LDA(tocq_chapters_dtm, k = 2, control = list(seed = 1234))
 ```
 
 After this, it is worth looking at another output of the latent dirichlet allocation procedure. The γ probability represents the per-document-per-topic probability or, in other words, the probability that a given document (here: chapter) belongs to a particular topic (and here, we are assuming these topics represent volumes).
 
 The gamma values are therefore the estimated proportion of words within a given chapter allocated to a given volume. 
 
-```{r}
 
+```r
 tocq_chapters_gamma <- tidy(tocq_chapters_lda, matrix = "gamma")
 tocq_chapters_gamma
+```
 
+```
+## # A tibble: 264 × 3
+##    document topic     gamma
+##    <chr>    <int>     <dbl>
+##  1 DiA2_76      1 0.551    
+##  2 DiA2_60      1 1.00     
+##  3 DiA1_52      1 0.0000464
+##  4 DiA1_42      1 0.0000746
+##  5 DiA1_11      1 0.0000382
+##  6 DiA1_21      1 0.0000437
+##  7 DiA1_20      1 0.0000425
+##  8 DiA1_28      1 0.249    
+##  9 DiA1_50      1 0.0000477
+## 10 DiA1_22      1 0.0000466
+## # ℹ 254 more rows
 ```
 
 ### Examine consensus
 
 Now that we have these topic probabilities, we can see how well our unsupervised learning did at distinguishing the two volumes generatively just from the words contained in each chapter.
 
-```{r}
 
+```r
 # First separate the document name into title and chapter
 
 tocq_chapters_gamma <- tocq_chapters_gamma %>%
@@ -255,13 +406,55 @@ tocq_book_topics <- tocq_chapter_classifications %>%
 tocq_chapter_classifications %>%
   inner_join(tocq_book_topics, by = "topic") %>%
   filter(title != consensus)
+```
 
+```
+## # A tibble: 15 × 5
+##    title chapter topic gamma consensus
+##    <chr>   <int> <int> <dbl> <chr>    
+##  1 DiA1       45     1 0.762 DiA2     
+##  2 DiA1        5     1 0.504 DiA2     
+##  3 DiA1       33     1 0.570 DiA2     
+##  4 DiA1       34     1 0.626 DiA2     
+##  5 DiA1       41     1 0.512 DiA2     
+##  6 DiA1       44     1 0.765 DiA2     
+##  7 DiA1        8     1 0.791 DiA2     
+##  8 DiA1        4     1 0.717 DiA2     
+##  9 DiA1       35     1 0.576 DiA2     
+## 10 DiA1       39     1 0.577 DiA2     
+## 11 DiA1        7     1 0.687 DiA2     
+## 12 DiA1       29     1 0.983 DiA2     
+## 13 DiA1        6     1 0.707 DiA2     
+## 14 DiA2       27     2 0.654 DiA1     
+## 15 DiA2       21     2 0.510 DiA1
+```
+
+```r
 # Look document-word pairs were to see which words in each documents were assigned
 # to a given topic
 
 assignments <- augment(tocq_chapters_lda, data = tocq_chapters_dtm)
 assignments
+```
 
+```
+## # A tibble: 69,781 × 4
+##    document term   count .topic
+##    <chr>    <chr>  <dbl>  <dbl>
+##  1 DiA2_76  united    88      2
+##  2 DiA2_60  united     6      1
+##  3 DiA1_52  united    11      2
+##  4 DiA1_42  united     7      2
+##  5 DiA1_11  united    13      2
+##  6 DiA1_21  united    23      2
+##  7 DiA1_20  united    21      2
+##  8 DiA1_28  united    14      2
+##  9 DiA1_50  united     5      2
+## 10 DiA1_22  united     8      2
+## # ℹ 69,771 more rows
+```
+
+```r
 assignments <- assignments %>%
   separate(document, c("title", "chapter"), sep = "_", convert = TRUE) %>%
   inner_join(tocq_book_topics, by = c(".topic" = "topic"))
@@ -280,8 +473,9 @@ assignments %>%
   labs(x = "Book words assigned to",
        y = "Book words came from",
        fill = "% of assignments")
-
 ```
+
+<img src="15-unsupervised-topicmodels_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 Not bad! We see that the model estimated with accuracy 91% of chapters in Volume 2 and 79% of chapters in Volume 1
 
@@ -293,45 +487,48 @@ In this section, we'll be using the `preText` package mentioned in @denny_text_2
 
 First we need to reformat our text into a `quanteda` corpus object. 
 
-```{r}
 
+```r
 # load in corpus of Tocequeville text data.
 corp <- corpus(tocq, text_field = "text")
 # use first 10 documents for example
 documents <- corp[sample(1:30000,1000)]
 # take a look at the document names
 print(names(documents[1:10]))
+```
 
+```
+##  [1] "text3190"  "text16152" "text25815" "text5396"  "text25239" "text16964"
+##  [7] "text6317"  "text18266" "text21278" "text2762"
 ```
 And now we are ready to preprocess in different ways. Here, we are including n-grams so we are preprocessing the text in 128 different ways. This takes about ten minutes to run on a machine with 8GB RAM. 
 
-```{r, eval = F}
 
+```r
 preprocessed_documents <- factorial_preprocessing(
     documents,
     use_ngrams = TRUE,
     infrequent_term_threshold = 0.2,
     verbose = FALSE)
-
 ```
 
 We can then get the results of our pre-processing, comparing the distance between documents that have been processed in different ways. 
 
 
-```{r, eval = F}
 
+```r
 preText_results <- preText(
     preprocessed_documents,
     dataset_name = "Tocqueville text",
     distance_method = "cosine",
     num_comparisons = 20,
     verbose = FALSE)
-
 ```
 
 And we can plot these accordingly. 
 
-```{r, eval = F}
+
+```r
 preText_score_plot(preText_results)
 ```
 

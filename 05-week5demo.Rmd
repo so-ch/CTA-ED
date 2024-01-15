@@ -4,7 +4,7 @@
 First, we'll load the packages we'll be using in this week's brief demo. 
 
 ```{r, message = F, warning = F}
-devtools::install_github("conjugateprior/austin")
+#devtools::install_github("conjugateprior/austin")
 library(austin)
 library(quanteda)
 library(quanteda.textstats)

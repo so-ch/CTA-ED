@@ -1,5 +1,7 @@
 # Exercise 2: Dictionary-based methods
 
+*This exercise relied on the twitter API, which is no longer available.*
+
 ## Introduction
 
 In this tutorial, you will learn how to:
@@ -21,7 +23,7 @@ Before proceeding, we'll load the remaining packages we will need for this tutor
 library(kableExtra)
 ```
 
-```{r, message=F}
+```{r, message=F, eval=F}
 library(academictwitteR) # for fetching Twitter data
 library(tidyverse) # loads dplyr, ggplot2, and others
 library(readr) # more informative and easy way to import data
@@ -61,7 +63,7 @@ For details of how to access Twitter data with `academictwitteR`, check out deta
 
 We can download the final dataset with:
 
-```{r}
+```{r, eval=F}
 tweets <- readRDS("data/sentanalysis/newstweets.rds")
 ```
 
@@ -76,7 +78,7 @@ tweets  <- readRDS(gzcon(url("https://github.com/cjbarrie/CTA-ED/blob/main/data/
 
 Let's have a look at the data:
 
-```{r}
+```{r, eval=F}
 head(tweets)
 colnames(tweets)
 ```
@@ -85,7 +87,7 @@ Each row here is a tweets produced by one of the news outlets detailed above ove
 
 We won't need all of these variables so let's just keep those that are of interest to us:
 
-```{r}
+```{r, eval=F}
 
 tweets <- tweets %>%
   select(user_username, text, created_at, user_name,
@@ -96,7 +98,7 @@ tweets <- tweets %>%
 
 ```
 
-```{r, echo = F}
+```{r, echo = F, eval=F}
 tweets %>% 
   arrange(created_at) %>%
   tail(5) %>%
@@ -106,7 +108,7 @@ tweets %>%
 
 We manipulate the data into tidy format again, unnesting each token (here: words) from the tweet text. 
 
-```{r}
+```{r, eval=F}
 tidy_tweets <- tweets %>% 
   mutate(desc = tolower(tweet)) %>%
   unnest_tokens(word, desc) %>%
@@ -115,7 +117,7 @@ tidy_tweets <- tweets %>%
 
 We'll then tidy this further, as in the previous example, by removing stop words:
 
-```{r}
+```{r, eval=F}
 tidy_tweets <- tidy_tweets %>%
     filter(!word %in% stop_words$word)
 ```
@@ -130,15 +132,15 @@ Several sentiment dictionaries come bundled with the <tt>tidytext</tt> package. 
 
 We can have a look at some of these to see how the relevant dictionaries are stored. 
 
-```{r,}
+```{r, eval=F}
 get_sentiments("afinn")
 ```
 
-```{r}
+```{r, eval=F}
 get_sentiments("bing")
 ```
 
-```{r}
+```{r, eval=F}
 get_sentiments("nrc")
 ```
 
@@ -146,7 +148,7 @@ What do we see here. First, the `AFINN` lexicon gives words a score from -5 to +
 
 Let's see how we might filter the texts by selecting a dictionary, or subset of a dictionary, and using `inner_join()` to then filter out tweet data. We might, for example, be interested in fear words. Maybe, we might hypothesize, there is a uptick of fear toward the beginning of the coronavirus outbreak. First, let's have a look at the words in our tweet data that the `nrc` lexicon codes as fear-related words.
 
-```{r}
+```{r, eval=F}
 
 nrc_fear <- get_sentiments("nrc") %>% 
   filter(sentiment == "fear")
@@ -163,7 +165,7 @@ We have a total of 1,174 words with some fear valence in our tweet data accordin
 
 Do we see any time trends? First let's make sure the data are properly arranged in ascending order by date. We'll then add column, which we'll call "order," the use of which will become clear when we do the sentiment analysis.
 
-```{r}
+```{r, eval=F}
 #gen data variable, order and format date
 tidy_tweets$date <- as.Date(tidy_tweets$created_at)
 
@@ -182,7 +184,7 @@ This means that if one date has many tweets totalling >1000 words, then we will 
 
 We then calculate the sentiment scores for each of our sentiment types (positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust) and use the `spread()` function to convert these into separate columns (rather than rows). Finally we calculate a net sentiment score by subtracting the score for negative sentiment from positive sentiment. 
 
-```{r}
+```{r, eval=F}
 #get tweet sentiment by date
 tweets_nrc_sentiment <- tidy_tweets %>%
   inner_join(get_sentiments("nrc")) %>%
@@ -199,7 +201,7 @@ tweets_nrc_sentiment %>%
 
 How do our different sentiment dictionaries look when compared to each other? We can then plot the sentiment scores over time for each of our sentiment dictionaries like so:
 
-```{r}
+```{r, eval=F}
 
 tidy_tweets %>%
   inner_join(get_sentiments("bing")) %>%
@@ -241,7 +243,7 @@ Of course, list- or dictionary-based methods need not only focus on sentiment, e
 
 A very minimal example would choose, for example, words like "death" and its synonyms and score these all as 1. We would then combine these into a dictionary, which we've called "mordict" here. 
 
-```{r}
+```{r, eval=F}
 
 word <- c('death', 'illness', 'hospital', 'life', 'health',
              'fatality', 'morbidity', 'deadly', 'dead', 'victim')
@@ -253,7 +255,7 @@ mordict
 
 We could then use the same technique as above to bind these with our data and look at the incidence of such words over time. Combining the sequence of scripts from above we would do the following:
 
-```{r}
+```{r, eval=F}
 tidy_tweets %>%
   inner_join(mordict) %>%
   group_by(date, index = order %/% 1000) %>% 
@@ -271,7 +273,7 @@ An alternative, and preferable, method here would simply take a character string
 
 After this, we join with our data frame of total words for each date. Note that here we are using `full_join()` as we want to include dates that appear in the "totals" data frame that do not appear when we filter for mortality words; i.e., days when mortality words are equal to 0. We then go about plotting as before.
 
-```{r}
+```{r, eval=F}
 mordict <- c('death', 'illness', 'hospital', 'life', 'health',
              'fatality', 'morbidity', 'deadly', 'dead', 'victim')
 
@@ -306,7 +308,7 @@ We will conduct the analysis using the `quanteda` package. You will see that we 
 
 With the `quanteda` package we first need to create a "corpus" object, by declaring our tweets a corpus object. Here, we make sure our date column is correctly stored and then create the corpus object with the `corpus()` function. Note that we are specifying the `text_field` as "tweet" as this is where our text data of interest is, and we are including information on the date that tweet was published. This information is specified with the `docvars` argument. You'll see tthen that the corpus consists of the text and so-called "docvars," which are just the variables (columns) in the original dataset. Here, we have only included the date column.
 
-```{r}
+```{r, eval=F}
 
 tweets$date <- as.Date(tweets$created_at)
 
@@ -315,14 +317,14 @@ tweet_corpus <- corpus(tweets, text_field = "tweet", docvars = "date")
 
 
 We then tokenize our text using the `tokens()` function from quanteda, removing punctuation along the way:
-```{r}
+```{r, eval=F}
 toks_news <- tokens(tweet_corpus, remove_punct = TRUE)
 
 ```
 
 We then take the `data_dictionary_LSD2015` that comes bundled with `quanteda` and and we select only the positive and negative categories, excluding words deemed "neutral." After this, we are ready to "look up" in this dictionary how the tokens in our corpus are scored with the `tokens_lookup()` function. 
 
-```{r}
+```{r, eval=F}
 # select only the "negative" and "positive" categories
 data_dictionary_LSD2015_pos_neg <- data_dictionary_LSD2015[1:2]
 
@@ -331,7 +333,7 @@ toks_news_lsd <- tokens_lookup(toks_news, dictionary = data_dictionary_LSD2015_p
 
 This creates a long list of all the texts (tweets) annotated with a series of 'positive' or 'negative' annotations depending on the valence of the words in that text. The creators of `quanteda` then recommend we generate a document feature matric from this. Grouping by date, we then get a dfm object, which is a quite convoluted list object that we can plot using base graphics functions for plotting matrices.
 
-```{r}
+```{r, eval=F}
 # create a document document-feature matrix and group it by date
 dfmat_news_lsd <- dfm(toks_news_lsd) %>% 
   dfm_group(groups = date)
@@ -353,7 +355,7 @@ abline(h = 0, lty = 2)
 
 Alternatively, we can recreate this in tidy format as follows:
 
-```{r}
+```{r, eval=F}
 
 negative <- dfmat_news_lsd@x[1:121]
 positive <- dfmat_news_lsd@x[122:242]
@@ -370,7 +372,7 @@ tidy_sent$date <- as.Date(tidy_sent$date)
 
 And plot accordingly:
 
-```{r}
+```{r, eval=F}
 tidy_sent %>%
   ggplot() +
   geom_line(aes(date, sentiment))

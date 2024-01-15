@@ -5,6 +5,8 @@ First, we'll load the packages we'll be using in this week's brief demo.
 
 ```{r, message = F, warning = F}
 library(topicmodels)
+# there are sometimes problem with installing topicmodels on Mac OS X. You can find help on Ken benoit's page here: https://kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/. For me, this required installing gsl and modeltools.
+
 library(dplyr)
 library(tidytext)
 library(ggplot2)

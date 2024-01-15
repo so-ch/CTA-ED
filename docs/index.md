@@ -1,7 +1,7 @@
 ---
 title: "Computational Text Analysis"
 author: "Marion Lieutaud"
-date: "`r Sys.Date()`"
+date: "2024-01-15"
 site: bookdown::bookdown_site
 output: bookdown::bs4_book
 documentclass: book
@@ -13,7 +13,7 @@ bibliography: [book.bib, packages.bib, CTA.bib]
 link-citations: yes
 github-repo: marionlieutaud/CTA-ED
 ---
-`r if (knitr::is_latex_output()) '<!--'`
+
 
 # "Computational Text Analysis" (PGSP11584) {.unnumbered}
 
@@ -43,4 +43,4 @@ The course is structured of alternating weeks of substantive and technical instr
 This course was initially designed by Christopher Barrie. The course benefited from syllabus materials shared online by Margaret Roberts, Alexandra Siegel, and Arthur Spirling. Thanks also to Justin Grimmer, Margaret Roberts, and Brandon Stewart for providing early view access to their book [*Text as Data*](https://press.princeton.edu/books/hardcover/9780691207544/text-as-data).
 
 
-`r if (knitr::is_latex_output()) '-->'`
+

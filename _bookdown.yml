@@ -4,3 +4,22 @@ output_dir: "docs"
 language:
   ui:
     chapter_name: "Chapter "
+new_session: yes
+
+rmd_files:
+  [
+    "index.Rmd",
+
+    "00-course-overview.Rmd",
+    "00-intro.Rmd",
+
+    "01-week1.Rmd",
+    "02-week2.Rmd",
+    "02-week2demo.Rmd",
+    "03-week3.Rmd",
+    "03-week3demo.Rmd",
+    "04-week4.Rmd",
+    "04-week4demo.Rmd",    "05-week5.Rmd",    "05-week5demo.Rmd",    "06-week6.Rmd",    "06-week6demo.Rmd",    "07-week7.Rmd",    "07-week7demo.Rmd",    "08-week8.Rmd",    "09-week9.Rmd",    "10-week10.Rmd",    "11-word-freq.Rmd",    "12-sent-analysis.Rmd",    "13-comparison-and-complexity.Rmd",    "14-scaling.Rmd",    "15-unsupervised-topicmodels.Rmd",    "16-unsupervised-word-embedding.Rmd",    "17-sampling-text.Rmd",    "19-validation.Rmd",    "20-assessment-data.Rmd",
+    "99-references.Rmd",
+
+  ]
