@@ -1,6 +1,6 @@
 # CTA-ED
 
-[https://marionlieutaud.github.io/CTA-ED/](https://marionlieutaud.github.io/CTA-ED/)
+[https://marionlieutaud.github.io/CTA-ED/](https://marionlieutaud.github.io/CTA-ED/course-overview)
 
 ![Course banner](CTA_banner.png)
 
