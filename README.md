@@ -8,7 +8,8 @@ This repo contains teaching materials for the ten-week course in "Computational 
 
 This will be the main resource we use throughout the ten weeks of the course. You will be able to access all of the materials, as well as the course overview by following [this link]([https://cjbarrie.github.io/CTA-ED/](https://marionlieutaud.github.io/CTA-ED/)). I will continue to edit and add materials to the website during the semester as we progress through the course.
 
-*slides*
-[Week 1 slides](https://drive.google.com/file/d/1vzWWJN_zSqrugAn094COE3jpwtWyky4j/view?usp=sharing)
+*Slides*
+
+[Week 1](https://drive.google.com/file/d/1vzWWJN_zSqrugAn094COE3jpwtWyky4j/view?usp=sharing)
 
 
