@@ -17,7 +17,7 @@ github-repo: marionlieutaud/CTA-ED
 
 # "Computational Text Analysis" (PGSP11584) {.unnumbered}
 
-![cover](coverb.png){.cover width="250"} This is the dedicated webpage for the course Computational Text Analysis" [(PGSP11584)](http://www.drps.ed.ac.uk/23-24/dpt/cxpgsp11584.htm) at the University of Edinburgh, convened by Marion Lieutaud and taught by Marion Lieutaud, Christopher Barrie and Aybuke Atalay (TA). Go to the Course Overview and Introduction tabs for a course overview and introduction to R.
+![cover](coverb.png){.cover width="250"} This is the dedicated webpage for the course Computational Text Analysis" [(PGSP11584)](http://www.drps.ed.ac.uk/23-24/dpt/cxpgsp11584.htm) at the University of Edinburgh, convened and taught by Dr. Marion Lieutaud. Go to the Course Overview and Introduction tabs for a course overview and introduction to R.
 
 We will be using this online book throughout the course. Each week has a set of essential and recommended readings. The essential readings must be consulted in full prior to the Lecture and Seminar for that week. In addition, you will find online exercises and examples written in R. This is a "live" book and will be amended and updated during the term as we progress through the course.
 
@@ -37,11 +37,11 @@ The course is structured of alternating weeks of substantive and technical instr
 | 8    | Sampling text information                    | [Demo](https://marionlieutaud.github.io/CTA-ED/week-8-demo.html)                                                                                                                        | Coding demo of Exercise 6 + Seminar discussion                                                                             |
 | 9    | Supervised learning                          | Demo + Exercise 8                                                                                                                                                                             | Flash talk + [Exercise 7](https://marionlieutaud.github.io/CTA-ED/exercise-7-sampling-text-information.html) group work |
 | 10   | Validation                                   | Demo + Exercise 9                                                                                                                                                                     | Coding demo of Exercise 8 + Seminar discussion                                                                          |
-|------|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+
 
 ## Acknowledgments {.unnumbered}
 
-This course was initially designed by Christopher Barrie. The course benefited from syllabus materials shared online by Margaret Roberts, Alexandra Siegel, and Arthur Spirling. Thanks also to Justin Grimmer, Margaret Roberts, and Brandon Stewart for providing early view access to their book [*Text as Data*](https://press.princeton.edu/books/hardcover/9780691207544/text-as-data).
+This course was initially designed by Christopher Barrie. The course benefited from syllabus materials shared online by Bradley Boehmke, Margaret Roberts, Alexandra Siegel, and Arthur Spirling. Thanks also to Justin Grimmer, Margaret Roberts, and Brandon Stewart for providing early view access to their book [*Text as Data*](https://press.princeton.edu/books/hardcover/9780691207544/text-as-data).
 
 
 
