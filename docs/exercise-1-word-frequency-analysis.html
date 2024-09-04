@@ -96,9 +96,10 @@
 <li><a class="" href="exercise-5-unsupervised-learning-topic-models.html"><span class="header-section-number">21</span> Exercise 5: Unsupervised learning (topic models)</a></li>
 <li><a class="" href="exercise-6-unsupervised-learning-word-embedding.html"><span class="header-section-number">22</span> Exercise 6: Unsupervised learning (word embedding)</a></li>
 <li><a class="" href="exercise-7-sampling-text-information.html"><span class="header-section-number">23</span> Exercise 7: Sampling text information</a></li>
-<li><a class="" href="exercise-9-validation.html"><span class="header-section-number">24</span> Exercise 9: Validation</a></li>
-<li><a class="" href="assessment-data.html"><span class="header-section-number">25</span> Assessment data</a></li>
-<li><a class="" href="references-2.html"><span class="header-section-number">26</span> References</a></li>
+<li><a class="" href="exercise-8-supervised-learning.html"><span class="header-section-number">24</span> Exercise 8: Supervised learning</a></li>
+<li><a class="" href="exercise-9-validation.html"><span class="header-section-number">25</span> Exercise 9: Validation</a></li>
+<li><a class="" href="assessment-data.html"><span class="header-section-number">26</span> Assessment data</a></li>
+<li><a class="" href="references-2.html"><span class="header-section-number">27</span> References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -151,11 +152,12 @@
 <pre><code>## New names:
 ## Rows: 5938 Columns: 12
 ## ── Column specification
-## ───────────────────────────────────────────────────────── Delimiter: "," chr
-## (8): festival_id, title, sub_title, artist, description, genre, age_categ... dbl
+## ───────────────────────────────────────── Delimiter: "," chr
+## (8): festival_id, title, sub_title, artist, description, ... dbl
 ## (4): ...1, year, latitude, longitude
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-## Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## ℹ Use `spec()` to retrieve the full column specification for
+## this data. ℹ Specify the column types or set `show_col_types =
+## FALSE` to quiet this message.
 ## • `` -&gt; `...1`</code></pre>
 <p>If you’re working on this document from your own computer (“locally”) you can download the Edinburgh Fringe data in the following way:</p>
 <div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
@@ -168,26 +170,26 @@
 <p>Our next job is to cut down this dataset to size, including only those columns that we need. But first we can inspect it to see what the existing column names are, and how each variable is coded. To do this we can first call:</p>
 <div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">edbfdata</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##  [1] "...1"         "festival_id"  "title"        "sub_title"    "artist"      
-##  [6] "year"         "description"  "genre"        "latitude"     "longitude"   
-## [11] "age_category" "ID"</code></pre>
+<pre><code>##  [1] "...1"         "festival_id"  "title"        "sub_title"   
+##  [5] "artist"       "year"         "description"  "genre"       
+##  [9] "latitude"     "longitude"    "age_category" "ID"</code></pre>
 <p>And then:</p>
 <div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">edbfdata</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Rows: 5,938
 ## Columns: 12
-## $ ...1         &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,…
-## $ festival_id  &lt;chr&gt; "book", "book", "book", "book", "book", "book", "book", "b…
-## $ title        &lt;chr&gt; "Denise Mina", "Alex T Smith", "Challenging Expectations w…
-## $ sub_title    &lt;chr&gt; "HARD MEN AND CARDBOARD GANGSTERS", NA, NA, "WHAT CAUSED T…
-## $ artist       &lt;chr&gt; "Denise Mina", "Alex T Smith", "Peter Cocks", "Paul Mason"…
-## $ year         &lt;dbl&gt; 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012…
-## $ description  &lt;chr&gt; "&lt;p&gt;\n\tAs the grande dame of Scottish crime fiction, Deni…
-## $ genre        &lt;chr&gt; "Literature", "Children", "Children", "Literature", "Child…
-## $ latitude     &lt;dbl&gt; 55.9519, 55.9519, 55.9519, 55.9519, 55.9519, 55.9519, 55.9…
-## $ longitude    &lt;dbl&gt; -3.206913, -3.206913, -3.206913, -3.206913, -3.206913, -3.…
-## $ age_category &lt;chr&gt; NA, "AGE 4 - 7", "AGE 11 - 14", NA, "AGE 10 - 14", "AGE 6 …
-## $ ID           &lt;chr&gt; "Denise Mina2012", "Alex T Smith2012", "Peter Cocks2012", …</code></pre>
+## $ ...1         &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,…
+## $ festival_id  &lt;chr&gt; "book", "book", "book", "book", "book", "b…
+## $ title        &lt;chr&gt; "Denise Mina", "Alex T Smith", "Challengin…
+## $ sub_title    &lt;chr&gt; "HARD MEN AND CARDBOARD GANGSTERS", NA, NA…
+## $ artist       &lt;chr&gt; "Denise Mina", "Alex T Smith", "Peter Cock…
+## $ year         &lt;dbl&gt; 2012, 2012, 2012, 2012, 2012, 2012, 2012, …
+## $ description  &lt;chr&gt; "&lt;p&gt;\n\tAs the grande dame of Scottish cri…
+## $ genre        &lt;chr&gt; "Literature", "Children", "Children", "Lit…
+## $ latitude     &lt;dbl&gt; 55.9519, 55.9519, 55.9519, 55.9519, 55.951…
+## $ longitude    &lt;dbl&gt; -3.206913, -3.206913, -3.206913, -3.206913…
+## $ age_category &lt;chr&gt; NA, "AGE 4 - 7", "AGE 11 - 14", NA, "AGE 1…
+## $ ID           &lt;chr&gt; "Denise Mina2012", "Alex T Smith2012", "Pe…</code></pre>
 <p>We can see that the description of each event is included in a column named “description” and the year of that event as “year.” So for now we’ll just keep these two. Remember: we’re interested in this tutorial firstly in the representation of gender and feminism in forms of cultural production given a platform at the Edinburgh International Book Festival. Given this, we are first and foremost interested in the reported content of each artist’s event.</p>
 <p>We use pipe <code>%&gt;%</code> functions in the tidyverse package to quickly and efficiently select the columns we want from the edbfdata data.frame object. We pass this data to a new data.frame object, which we call “evdes.”</p>
 <div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
@@ -197,14 +199,14 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">evdes</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 6 × 2
-##   description                                                                year
-##   &lt;chr&gt;                                                                     &lt;dbl&gt;
-## 1 "&lt;p&gt;\n\tAs the grande dame of Scottish crime fiction, Denise Mina places…  2012
-## 2 "&lt;p&gt;\n\tWhen Alex T Smith was a little boy he wanted to be a chef, a rab…  2012
-## 3 "&lt;p&gt;\n\tPeter Cocks is known for his fantasy series Triskellion written …  2012
-## 4 "&lt;p&gt;\n\tTwo books by influential journalists are among the first to look…  2012
-## 5 "&lt;p&gt;\n\tChris d&amp;rsquo;Lacey tells you all about The Fire Ascending, the …  2012
-## 6 "&lt;p&gt;\n\tIt&amp;rsquo;s time for the honourable, feisty and courageous young …  2012</code></pre>
+##   description                                                year
+##   &lt;chr&gt;                                                     &lt;dbl&gt;
+## 1 "&lt;p&gt;\n\tAs the grande dame of Scottish crime fiction, De…  2012
+## 2 "&lt;p&gt;\n\tWhen Alex T Smith was a little boy he wanted to …  2012
+## 3 "&lt;p&gt;\n\tPeter Cocks is known for his fantasy series Tris…  2012
+## 4 "&lt;p&gt;\n\tTwo books by influential journalists are among t…  2012
+## 5 "&lt;p&gt;\n\tChris d&amp;rsquo;Lacey tells you all about The Fire…  2012
+## 6 "&lt;p&gt;\n\tIt&amp;rsquo;s time for the honourable, feisty and c…  2012</code></pre>
 <p>And let’s take a quick look at how many events there were over time at the festival. To do this, we first calculate the number of individual events (row observations) by year (column variable).</p>
 <div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">evtsperyr</span> <span class="op">&lt;-</span> <span class="va">evdes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -231,7 +233,7 @@
 <span><span class="va">tidy_des</span> <span class="op">&lt;-</span> <span class="va">evdes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>desc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="va">description</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/tidytext/man/unnest_tokens.html">unnest_tokens</a></span><span class="op">(</span><span class="va">word</span>, <span class="va">desc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stringr/man/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">word</span>, <span class="st">"[a-z]"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">word</span>, <span class="st">"[a-z]"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="back-to-the-fringe" class="section level2" number="17.6">
 <h2>
@@ -523,51 +525,66 @@
 <span><span class="va">names2</span> <span class="op">&lt;-</span> <span class="va">gendes</span><span class="op">$</span><span class="va">name</span></span>
 <span><span class="va">diffs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="va">names2</span>, <span class="va">names1</span><span class="op">)</span></span>
 <span><span class="va">diffs</span></span></code></pre></div>
-<pre><code>##   [1] "L"             "Kapka"         "Menzies"       "Ros"          
-##   [5] "G"             "Pankaj"        "Uzodinma"      "Rodge"        
-##   [9] "A"             "Zoë"           "László"        "Sadakat"      
-##  [13] "Michèle"       "Maajid"        "Yrsa"          "Ahdaf"        
-##  [17] "Noo"           "Dilip"         "Sjón"          "François"     
-##  [21] "J"             "K"             "Aonghas"       "S"            
-##  [25] "Bashabi"       "Kjartan"       "Romesh"        "T"            
-##  [29] "Chibundu"      "Yiyun"         "Fiammetta"     "W"            
-##  [33] "Sindiwe"       "Cat"           "Jez"           "Fi"           
-##  [37] "Sunder"        "Saci"          "C.J"           "Halik"        
-##  [41] "Niccolò"       "Sifiso"        "C.S."          "DBC"          
-##  [45] "Phyllida"      "R"             "Struan"        "C.J."         
-##  [49] "SF"            "Nadifa"        "Jérome"        "D"            
-##  [53] "Xiaolu"        "Ramita"        "John-Paul"     "Ha-Joon"      
-##  [57] "Niq"           "Andrés"        "Sasenarine"    "Frane"        
-##  [61] "Alev"          "Gruff"         "Line"          "Zakes"        
-##  [65] "Pip"           "Witi"          "Halsted"       "Ziauddin"     
-##  [69] "J."            "Åsne"          "Alecos"        "."            
-##  [73] "Julián"        "Sunjeev"       "A.C.S"         "Etgar"        
-##  [77] "Hyeonseo"      "Jaume"         "A."            "Jesús"        
-##  [81] "Jón"           "Helle"         "M"             "Jussi"        
-##  [85] "Aarathi"       "Shappi"        "Macastory"     "Odafe"        
-##  [89] "Chimwemwe"     "Hrefna"        "Bidisha"       "Packie"       
-##  [93] "Tahmima"       "Sara-Jane"     "Tahar"         "Lemn"         
-##  [97] "Neu!"          "Jürgen"        "Barroux"       "Jan-Philipp"  
-## [101] "Non"           "Metaphrog"     "Wilko"         "Álvaro"       
-## [105] "Stef"          "Erlend"        "Grinagog"      "Norma-Ann"    
-## [109] "Fuchsia"       "Giddy"         "Joudie"        "Sav"          
-## [113] "Liu"           "Jayne-Anne"    "Wioletta"      "Sinéad"       
-## [117] "Katherena"     "Siân"          "Dervla"        "Teju"         
-## [121] "Iosi"          "Daša"          "Cosey"         "Bettany"      
-## [125] "Thordis"       "Uršuľa"        "Limmy"         "Meik"         
-## [129] "Zindzi"        "Dougie"        "Ngugi"         "Inua"         
-## [133] "Ottessa"       "Bjørn"         "Novuyo"        "Rhidian"      
-## [137] "Sibéal"        "Hsiao-Hung"    "Audur"         "Sadek"        
-## [141] "Özlem"         "Zaffar"        "Jean-Pierre"   "Lalage"       
-## [145] "Yaba"          "H"             "DJ"            "Sigitas"      
-## [149] "Clémentine"    "Celeste-Marie" "Marawa"        "Ghillie"      
-## [153] "Ahdam"         "Suketu"        "Goenawan"      "Niviaq"       
-## [157] "Steinunn"      "Shoo"          "Ibram"         "Venki"        
-## [161] "DeRay"         "Diarmaid"      "Serhii"        "Harkaitz"     
-## [165] "Adélaïde"      "Agustín"       "Jérôme"        "Siobhán"      
-## [169] "Nesrine"       "Jokha"         "Gulnar"        "Uxue"         
-## [173] "Taqralik"      "Tayi"          "E"             "Dapo"         
-## [177] "Dunja"         "Maaza"         "Wayétu"        "Shokoofeh"</code></pre>
+<pre><code>##   [1] "L"             "Kapka"         "Menzies"      
+##   [4] "Ros"           "G"             "Pankaj"       
+##   [7] "Uzodinma"      "Rodge"         "A"            
+##  [10] "Zoë"           "László"        "Sadakat"      
+##  [13] "Michèle"       "Maajid"        "Yrsa"         
+##  [16] "Ahdaf"         "Noo"           "Dilip"        
+##  [19] "Sjón"          "François"      "J"            
+##  [22] "K"             "Aonghas"       "S"            
+##  [25] "Bashabi"       "Kjartan"       "Romesh"       
+##  [28] "T"             "Chibundu"      "Yiyun"        
+##  [31] "Fiammetta"     "W"             "Sindiwe"      
+##  [34] "Cat"           "Jez"           "Fi"           
+##  [37] "Sunder"        "Saci"          "C.J"          
+##  [40] "Halik"         "Niccolò"       "Sifiso"       
+##  [43] "C.S."          "DBC"           "Phyllida"     
+##  [46] "R"             "Struan"        "C.J."         
+##  [49] "SF"            "Nadifa"        "Jérome"       
+##  [52] "D"             "Xiaolu"        "Ramita"       
+##  [55] "John-Paul"     "Ha-Joon"       "Niq"          
+##  [58] "Andrés"        "Sasenarine"    "Frane"        
+##  [61] "Alev"          "Gruff"         "Line"         
+##  [64] "Zakes"         "Pip"           "Witi"         
+##  [67] "Halsted"       "Ziauddin"      "J."           
+##  [70] "Åsne"          "Alecos"        "."            
+##  [73] "Julián"        "Sunjeev"       "A.C.S"        
+##  [76] "Etgar"         "Hyeonseo"      "Jaume"        
+##  [79] "A."            "Jesús"         "Jón"          
+##  [82] "Helle"         "M"             "Jussi"        
+##  [85] "Aarathi"       "Shappi"        "Macastory"    
+##  [88] "Odafe"         "Chimwemwe"     "Hrefna"       
+##  [91] "Bidisha"       "Packie"        "Tahmima"      
+##  [94] "Sara-Jane"     "Tahar"         "Lemn"         
+##  [97] "Neu!"          "Jürgen"        "Barroux"      
+## [100] "Jan-Philipp"   "Non"           "Metaphrog"    
+## [103] "Wilko"         "Álvaro"        "Stef"         
+## [106] "Erlend"        "Grinagog"      "Norma-Ann"    
+## [109] "Fuchsia"       "Giddy"         "Joudie"       
+## [112] "Sav"           "Liu"           "Jayne-Anne"   
+## [115] "Wioletta"      "Sinéad"        "Katherena"    
+## [118] "Siân"          "Dervla"        "Teju"         
+## [121] "Iosi"          "Daša"          "Cosey"        
+## [124] "Bettany"       "Thordis"       "Uršuľa"       
+## [127] "Limmy"         "Meik"          "Zindzi"       
+## [130] "Dougie"        "Ngugi"         "Inua"         
+## [133] "Ottessa"       "Bjørn"         "Novuyo"       
+## [136] "Rhidian"       "Sibéal"        "Hsiao-Hung"   
+## [139] "Audur"         "Sadek"         "Özlem"        
+## [142] "Zaffar"        "Jean-Pierre"   "Lalage"       
+## [145] "Yaba"          "H"             "DJ"           
+## [148] "Sigitas"       "Clémentine"    "Celeste-Marie"
+## [151] "Marawa"        "Ghillie"       "Ahdam"        
+## [154] "Suketu"        "Goenawan"      "Niviaq"       
+## [157] "Steinunn"      "Shoo"          "Ibram"        
+## [160] "Venki"         "DeRay"         "Diarmaid"     
+## [163] "Serhii"        "Harkaitz"      "Adélaïde"     
+## [166] "Agustín"       "Jérôme"        "Siobhán"      
+## [169] "Nesrine"       "Jokha"         "Gulnar"       
+## [172] "Uxue"          "Taqralik"      "Tayi"         
+## [175] "E"             "Dapo"          "Dunja"        
+## [178] "Maaza"         "Wayétu"        "Shokoofeh"</code></pre>
 <p>Do we notice anything about these names? What does this tell us about the potential biases of using such sources as US baby names data as a foundation for gender prediction? What are alternative ways we might go about this task?</p>
 </div>
 <div id="exercises" class="section level2" number="17.11">
@@ -622,7 +639,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2024-01-02.</p>
+    <p>"<strong>Computational Text Analysis</strong>" was written by Marion Lieutaud. It was last built on 2024-03-19.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
