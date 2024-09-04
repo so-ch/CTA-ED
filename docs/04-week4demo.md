@@ -4,7 +4,7 @@
 First, we'll load the packages we'll be using in this week's brief demo. 
 
 
-```r
+``` r
 library(quanteda)
 library(quanteda.textstats)
 library(quanteda.textplots)
@@ -21,7 +21,7 @@ A first measure of text similarity is at the level of characters. We can look *f
 We'll make two sentences and create two character objects from them. These are two thoughts imagined up from our classes. 
 
 
-```r
+``` r
 a <- "We are all very happy to be at a lecture at 11AM"
 b <- "We are all even happier that we don’t have two lectures a week"
 ```
@@ -31,7 +31,7 @@ We know that the "longest common substring measure" is, according to the [string
 And we can easily get different distance/similarity measures by comparing our character objects `a` and `b` as so. 
 
 
-```r
+``` r
 ## longest common substring distance
 stringdist(a, b,
            method = "lcs")
@@ -41,7 +41,7 @@ stringdist(a, b,
 ## [1] 36
 ```
 
-```r
+``` r
 ## levenshtein distance
 stringdist(a, b,
            method = "lv")
@@ -51,7 +51,7 @@ stringdist(a, b,
 ## [1] 27
 ```
 
-```r
+``` r
 ## jaro distance
 stringdist(a, b,
            method = "jw", p =0)
@@ -68,7 +68,7 @@ In this second example from the lecture, we're taking the opening line of *Pride
 We can get the text of Jane Austen very easily thanks to the `janeaustenr` package.
 
 
-```r
+``` r
 ## similarity and distance example
 
 text <- janeaustenr::prideprejudice
@@ -87,7 +87,7 @@ sentence1
 We're then going to specify our alternative versions of this same sentence. 
 
 
-```r
+``` r
 sentence2 <- "Everyone knows that a rich man without wife will want a wife"
 
 sentence3 <- "He's loaded so he wants to get married. Everyone knows that's what happens."
@@ -96,28 +96,29 @@ sentence3 <- "He's loaded so he wants to get married. Everyone knows that's what
 Finally, we're going to convert these into a document feature matrix. We're doing this with the `quanteda` package, which is a package that we'll begin using more and more over coming weeks as the analyses we're performing get gradually more technical. 
 
 
-```r
+``` r
 dfmat <- dfm(tokens(c(sentence1,
                       sentence2,
                       sentence3)),
-             remove_punct = TRUE, remove = stopwords("english"))
+             remove_punct = TRUE) %>%
+  dfm_remove(stopwords("english"))
 
 dfmat
 ```
 
 ```
-## Document-feature matrix of: 3 documents, 20 features (58.33% sparse) and 0 docvars.
+## Document-feature matrix of: 3 documents, 22 features (57.58% sparse) and 0 docvars.
 ##        features
-## docs    truth universally acknowledged single man possession good fortune must
-##   text1     1           1            1      1   1          1    1       1    1
-##   text2     0           0            0      0   1          0    0       0    0
-##   text3     0           0            0      0   0          0    0       0    0
+## docs    truth universally acknowledged , single man possession good fortune
+##   text1     1           1            1 2      1   1          1    1       1
+##   text2     0           0            0 0      0   1          0    0       0
+##   text3     0           0            0 0      0   0          0    0       0
 ##        features
-## docs    want
+## docs    must
 ##   text1    1
-##   text2    1
+##   text2    0
 ##   text3    0
-## [ reached max_nfeat ... 10 more features ]
+## [ reached max_nfeat ... 12 more features ]
 ```
 
 What do we see here?
@@ -129,43 +130,43 @@ So, how do we then measure the similarity or distance between these texts?
 The first way is simply by correlating the two sets of ones and zeroes. We can do this with the `quanteda.textstats` package like so.
 
 
-```r
+``` r
 ## correlation
 textstat_simil(dfmat, margin = "documents", method = "correlation")
 ```
 
 ```
 ## textstat_simil object; method = "correlation"
-##         text1   text2  text3
-## text1  1.0000 -0.0689 -0.811
-## text2 -0.0689  1.0000 -0.144
-## text3 -0.8112 -0.1438  1.000
+##        text1  text2  text3
+## text1  1.000 -0.154 -0.517
+## text2 -0.154  1.000 -0.177
+## text3 -0.517 -0.177  1.000
 ```
 
 And you'll see that this is the same as what we would get if we manipulated the data into tidy format (rows for words and columns of 1s and 0s).
 
 
-```r
+``` r
 test <- tidy(dfmat)
 test <- test %>%
   cast_dfm(term, document, count)
-test <- as.data.frame(test)
+test <- convert(test, to = "data.frame")
 
 res <- cor(test[,2:4])
 res
 ```
 
 ```
-##             text1       text2      text3
-## text1  1.00000000 -0.06894503 -0.8112457
-## text2 -0.06894503  1.00000000 -0.1438235
-## text3 -0.81124574 -0.14382349  1.0000000
+##            text1      text2      text3
+## text1  1.0000000 -0.1538462 -0.5174145
+## text2 -0.1538462  1.0000000 -0.1766781
+## text3 -0.5174145 -0.1766781  1.0000000
 ```
 
 And we see that as expected `text2` is more highly correlated with `text1` than is `text3`. 
 
 
-```r
+``` r
 corrplot(res, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
 ```
@@ -174,22 +175,22 @@ corrplot(res, type = "upper", order = "hclust",
 As for Euclidean distances, we can again use `quanteda` as so.
 
 
-```r
+``` r
 textstat_dist(dfmat, margin = "documents", method = "euclidean")
 ```
 
 ```
 ## textstat_dist object; method = "euclidean"
 ##       text1 text2 text3
-## text1     0  3.61  4.24
-## text2  3.61     0  3.61
-## text3  4.24  3.61     0
+## text1     0  4.24  4.80
+## text2  4.24     0  4.12
+## text3  4.80  4.12     0
 ```
 
 Or we could define our own function just so we see what's going on behind the scenes.
 
 
-```r
+``` r
 # function for Euclidean distance
 euclidean <- function(a,b) sqrt(sum((a - b)^2))
 # estimating the distance
@@ -197,44 +198,44 @@ euclidean(test$text1, test$text2)
 ```
 
 ```
-## [1] 3.605551
+## [1] 4.242641
 ```
 
-```r
+``` r
 euclidean(test$text1, test$text3)
 ```
 
 ```
-## [1] 4.242641
+## [1] 4.795832
 ```
 
-```r
+``` r
 euclidean(test$text2, test$text3)
 ```
 
 ```
-## [1] 3.605551
+## [1] 4.123106
 ```
 
 For Manhattan distance, we could use `quanteda` again.
 
 
-```r
+``` r
 textstat_dist(dfmat, margin = "documents", method = "manhattan")
 ```
 
 ```
 ## textstat_dist object; method = "manhattan"
 ##       text1 text2 text3
-## text1     0    13    18
-## text2    13     0    11
-## text3    18    11     0
+## text1     0    16    21
+## text2    16     0    13
+## text3    21    13     0
 ```
 
 Or we could again define our own function.
 
 
-```r
+``` r
 ## manhattan
 manhattan <- function(a, b){
   dist <- abs(a - b)
@@ -246,44 +247,44 @@ manhattan(test$text1, test$text2)
 ```
 
 ```
-## [1] 13
+## [1] 16
 ```
 
-```r
+``` r
 manhattan(test$text1, test$text3)
 ```
 
 ```
-## [1] 18
+## [1] 21
 ```
 
-```r
+``` r
 manhattan(test$text2, test$text3)
 ```
 
 ```
-## [1] 11
+## [1] 13
 ```
 
 And for the cosine similarity, `quanteda` again makes this straightforward.
 
 
-```r
+``` r
 textstat_simil(dfmat, margin = "documents", method = "cosine")
 ```
 
 ```
 ## textstat_simil object; method = "cosine"
 ##       text1 text2 text3
-## text1 1.000 0.381     0
-## text2 0.381 1.000 0.239
-## text3     0 0.239 1.000
+## text1 1.000 0.316 0.151
+## text2 0.316 1.000 0.191
+## text3 0.151 0.191 1.000
 ```
 
 But to make clear what's going on here, we could again write our own function. 
 
 
-```r
+``` r
 ## cosine
 cos.sim <- function(a, b) 
 {
@@ -294,23 +295,23 @@ cos.sim(test$text1, test$text2)
 ```
 
 ```
-## [1] 0.381385
+## [1] 0.3162278
 ```
 
-```r
+``` r
 cos.sim(test$text1, test$text3)
 ```
 
 ```
-## [1] 0
+## [1] 0.1507557
 ```
 
-```r
+``` r
 cos.sim(test$text2, test$text3)
 ```
 
 ```
-## [1] 0.2390457
+## [1] 0.1906925
 ```
 
 ## Complexity
@@ -329,7 +330,7 @@ This is computed as:
 We can estimate a readability score for our respective sentences as such. The Flesch score from 1948 is the default. 
 
 
-```r
+``` r
 textstat_readability(sentence1)
 ```
 
@@ -338,7 +339,7 @@ textstat_readability(sentence1)
 ## 1    text1 62.10739
 ```
 
-```r
+``` r
 textstat_readability(sentence2)
 ```
 
@@ -347,7 +348,7 @@ textstat_readability(sentence2)
 ## 1    text1 88.905
 ```
 
-```r
+``` r
 textstat_readability(sentence3)
 ```
 
@@ -373,7 +374,7 @@ This measure is regression equation D in McLaughlin's original paper.}
 We can calculate this for our three sentences as below.
 
 
-```r
+``` r
 textstat_readability(sentence1, measure = "SMOG")
 ```
 
@@ -382,7 +383,7 @@ textstat_readability(sentence1, measure = "SMOG")
 ## 1    text1 13.02387
 ```
 
-```r
+``` r
 textstat_readability(sentence2, measure = "SMOG")
 ```
 
@@ -391,7 +392,7 @@ textstat_readability(sentence2, measure = "SMOG")
 ## 1    text1 8.841846
 ```
 
-```r
+``` r
 textstat_readability(sentence3, measure = "SMOG")
 ```
 

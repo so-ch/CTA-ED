@@ -137,7 +137,9 @@ We'll then estimate the Wordfish model in the same way as in the article by @kan
 ```{r}
 #### estimate the Wordfish model ####
 set.seed(12345)
-Study1.wordfish.result <- textmodel_wordfish(kaneko_dfm_study1, sparse = TRUE)
+Study1.wordfish.result <- textmodel_wordfish(kaneko_dfm_study1
+                                             #, sparse = TRUE
+                                             )
 
 ## positions of newspapers
 wordfishscores <- data.frame(Newspaper = Study1.wordfish.result$docs, 

@@ -37,7 +37,7 @@ IT Services at the University of Edinburgh have provided a [walkthrough](https:/
 Begin by opening RStudio (located on the desktop). Your first task is to create a new script (this is where we will write our commands). To do so, click: 
 
 
-```r
+``` r
 File --> NewFile --> RScript
 ```
 
@@ -56,7 +56,7 @@ Your screen should now have four panes:
 The Script (top left) is where we write our commands for R. You can try this out for a first time by writing a small snipped of code as follows:
 
 
-```r
+``` r
 x <- "I can't wait to learn Computational Text Analysis" #Note the quotation marks!
 ```
 
@@ -67,7 +67,7 @@ Running the command above creates an object named ‘x’, that contains the wor
 You can now see ‘x’ in the Environment (top right). To view what is contained in x, type in the Console (bottom left):
 
 
-```r
+``` r
 print(x)
 ```
 
@@ -75,7 +75,7 @@ print(x)
 ## [1] "I can't wait to learn Computational Text Analysis"
 ```
 
-```r
+``` r
 # or alternatively you can just type:
 
 x
@@ -98,32 +98,34 @@ This might sound technical. But the beauty of the packaged extensions of <tt>R</
 We'll first need to install one of these packages, which you can do as below:
 
 
-```r
+``` r
 install.packages("tidyverse")
 ```
 
 After the package is installed, we then need to load it into our environment by typing <tt>library(<insert name of package here>)</tt>. Note that, here, you don't need to wrap the name of the package in quotation marks. So this will do the trick:
 
 
-```r
+``` r
 library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0     ✔ purrr   1.0.1
-## ✔ tibble  3.1.8     ✔ dplyr   1.1.0
-## ✔ tidyr   1.3.0     ✔ stringr 1.5.1
-## ✔ readr   2.1.3     ✔ forcats 1.0.0
+## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 ```
 
 What now? Well, let's see just how easy it is to visualize some data using <tt>ggplot</tt> which is a package that comes bundled into the larger <tt>tidyverse</tt> package.
 
 
-```r
+``` r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy))
 ```
@@ -141,7 +143,7 @@ If we wanted to save where we'd got to with making our plots, we would want to s
 + To save **individual** objects (for example <tt>x</tt> from above) from your environment, run the following command (choosing a suitable filename): 
 
 
-```r
+``` r
 save(x,file="myobject.RData")
 load(file="myobject.RData")
 ```
@@ -149,14 +151,14 @@ load(file="myobject.RData")
 + To save **all** of your objects (i.e. everything in the top right panel) at once, run the following command (choosing a suitable filename):
 
 
-```r
+``` r
 save.image(file="myfilname.RData")
 ```
 
 + Your objects can be re-loaded into R during your next session by running:
 
 
-```r
+``` r
 load(file="myfilename.RData")
 ```
 
@@ -167,14 +169,14 @@ There are many other file formats you might use to save any output. We will enco
 If you are at home, when you open a new script make sure to check and set your working directory (i.e. the folder where the files you create will be saved). To check your working directory use the getwd() command (type it into the Console or write it in your script in the Source Editor):
 
 
-```r
+``` r
 getwd()
 ```
 
 To set your working directory, run the following command, substituting the file directory of your choice. Remember that anything following the `#’ symbol is simply a clarifying comment and R will not process it.
 
 
-```r
+``` r
 ## Example for Mac 
 setwd("/Users/Documents/mydir/") 
 ## Example for PC 
@@ -194,7 +196,7 @@ For some further practice in the R programming language, look no further than @w
 - For more practice with R, you may want to consult a set of interactive tutorials, available through the package "learnr." Once you've installed this package, you can go through the tutorials yourselves by calling:
 
 
-```r
+``` r
 library(learnr)
 
 available_tutorials() # this will tell you the names of the tutorials available

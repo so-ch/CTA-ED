@@ -4,7 +4,7 @@
 First, we'll load the packages we'll be using in this week's brief demo. 
 
 
-```r
+``` r
 #devtools::install_github("conjugateprior/austin")
 library(austin)
 library(quanteda)
@@ -16,7 +16,7 @@ library(quanteda.textstats)
 We can inspect the function for the wordscores model by @laver_extracting_2003 in the following way:
 
 
-```r
+``` r
 classic.wordscores
 ```
 
@@ -43,14 +43,14 @@ classic.wordscores
 ##     class(val) <- c("classic.wordscores", "wordscores", class(val))
 ##     return(val)
 ## }
-## <bytecode: 0x7fdf05908830>
+## <bytecode: 0x118b8e3e0>
 ## <environment: namespace:austin>
 ```
 
 We can then take some example data included in the `austin` package.
 
 
-```r
+``` r
 data(lbg)
 ref <- getdocs(lbg, 1:5)
 ```
@@ -58,7 +58,7 @@ ref <- getdocs(lbg, 1:5)
 And here our reference documents are all those documents marked with an "R" for reference; i.e., columns one to five.
 
 
-```r
+``` r
 ref
 ```
 
@@ -109,7 +109,7 @@ This matrix is simply a series of words (here: letters) and reference texts with
 We can then look at the wordscores for each of the words, calculated using the reference dimensions for each of the reference documents.
 
 
-```r
+``` r
 ws <- classic.wordscores(ref, scores=seq(-1.5,1.5,by=0.75))
 ws
 ```
@@ -211,7 +211,7 @@ And here we see the thetas contained in this wordscores object, i.e., the refere
 We can now use these to score the so-called "virgin" texts as follows. 
 
 
-```r
+``` r
 #get "virgin" documents
 vir <- getdocs(lbg, 'V1')
 vir
@@ -259,7 +259,7 @@ vir
 ##    ZK   0
 ```
 
-```r
+``` r
 # predict textscores for the virgin documents
 predict(ws, newdata=vir)
 ```
@@ -278,14 +278,14 @@ If we wish, we can inspect the function for the wordscores model by @slapin_scal
 
 
 
-```r
+``` r
 wordfish
 ```
 
 We can then simulate some data, formatted appropriately for wordfiash estimation in the following way:
 
 
-```r
+``` r
 dd <- sim.wordfish()
 
 dd
@@ -295,26 +295,26 @@ dd
 ## $Y
 ##      docs
 ## words D01 D02 D03 D04 D05 D06 D07 D08 D09 D10
-##   W01  18  23  13  22  18  10  12   4   8   6
-##   W02  21  11  13  15  10  20  13   8   6   4
-##   W03  22  17  15  14  23  11   6   8   3   4
-##   W04  20  18  30  18  11  23  12   5   9  12
-##   W05  12  19  19  13  14  14   8   4   5   2
-##   W06   5   6  13   9   9   9  13  22  24  21
-##   W07   2  11   9   6   6  15  21  20  19  23
-##   W08   9   4   7  11   9  20  16  23  19  31
-##   W09   6   8   5   3  13   9  17  16  18  18
-##   W10   9   9   9  13  13   8  22  15  26  24
-##   W11  50  51  52  47  43  34  22  20  29  17
-##   W12  73  54  51  59  38  36  28  24  19  25
-##   W13  64  61  54  47  43  31  28  17  22  18
-##   W14  60  53  43  39  41  26  29  22  15  13
-##   W15  65  59  46  52  45  27  27  18  21  17
-##   W16   7  22  16  24  28  45  48  53  59  56
-##   W17  21  16  34  30  31  35  43  53  53  39
-##   W18  12  19  17  15  45  42  50  49  49  54
-##   W19  10  23  24  33  30  38  42  62  60  57
-##   W20  14  16  30  30  30  47  43  57  36  59
+##   W01  19  21  27  12  25  12   6   9   7   8
+##   W02  22  17  19  12  10  15  13  13   5   3
+##   W03  25  11  19  11  12  16  12   5   6   3
+##   W04  18  18  13  15  14  13  13   7   8   3
+##   W05  16  20  18  25  18  21  13   7   9  12
+##   W06   5   8   8  11  11  16  15  15  27  25
+##   W07   5   6   6  11   6  13  19  24  19  18
+##   W08   4   4   9  12  12  12  19  17   8  15
+##   W09   4   5  11   9  19  14  19  21  20  14
+##   W10  12   7   8   7  13  14  10  18  20  26
+##   W11  65  61  47  47  42  37  26  26   7  14
+##   W12  48  50  47  43  38  29  30  17  20   7
+##   W13  58  51  54  48  50  32  31  18  15  16
+##   W14  60  73  41  49  32  23  32  24  17  19
+##   W15  62  58  50  51  35  23  31  22  20   8
+##   W16  10  15  27  24  34  46  31  58  57  49
+##   W17  18  23  24  24  27  42  40  49  52  68
+##   W18   9  15  27  28  32  38  53  40  72  58
+##   W19  21  20  22  37  35  46  47  43  53  76
+##   W20  19  17  23  24  35  38  40  67  58  58
 ## 
 ## $theta
 ##  [1] -1.4863011 -1.1560120 -0.8257228 -0.4954337 -0.1651446  0.1651446
@@ -339,7 +339,7 @@ Here we can see the document and word-level FEs, as well as the specified range 
 Then estimating the document positions is simply a matter of implementing this algorithm.
 
 
-```r
+``` r
 wf <- wordfish(dd$Y)
 summary(wf)
 ```
@@ -349,17 +349,17 @@ summary(wf)
 ## 	wordfish(wfm = dd$Y)
 ## 
 ## Document Positions:
-##     Estimate Std. Error    Lower   Upper
-## D01  -1.5465    0.12153 -1.78470 -1.3083
-## D02  -1.0437    0.10712 -1.25370 -0.8338
-## D03  -0.7454    0.10129 -0.94391 -0.5469
-## D04  -0.6526    0.09987 -0.84830 -0.4568
-## D05  -0.3093    0.09618 -0.49781 -0.1208
-## D06   0.2180    0.09519  0.03143  0.4046
-## D07   0.5943    0.09793  0.40232  0.7862
-## D08   1.1218    0.10672  0.91265  1.3310
-## D09   1.0667    0.10552  0.85988  1.2735
-## D10   1.2956    0.11094  1.07821  1.5131
+##     Estimate Std. Error    Lower    Upper
+## D01  -1.3859    0.11111 -1.60369 -1.16814
+## D02  -1.2149    0.10635 -1.42339 -1.00649
+## D03  -0.7517    0.09692 -0.94164 -0.56172
+## D04  -0.5570    0.09440 -0.74203 -0.37200
+## D05  -0.2453    0.09206 -0.42573 -0.06487
+## D06   0.2287    0.09246  0.04744  0.40989
+## D07   0.3226    0.09311  0.14010  0.50508
+## D08   0.8440    0.10019  0.64761  1.04036
+## D09   1.2636    0.11041  1.04721  1.48002
+## D10   1.4953    0.11792  1.26420  1.72644
 ```
 
 ## Using `quanteda`

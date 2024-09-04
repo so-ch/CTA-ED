@@ -105,8 +105,9 @@ dim(dfm_newstweets)
 
 #### estimate the Wordfish model ####
 set.seed(123L)
-dfm_newstweets_results <- textmodel_wordfish(dfm_newstweets, 
-                                             sparse = TRUE)
+dfm_newstweets_results <- textmodel_wordfish(dfm_newstweets #, 
+                                             #sparse = TRUE
+                                             )
 
 ```
 
@@ -145,7 +146,7 @@ feat_betas$betas <- as.numeric(feat_betas$betas)
 
 feat_betas %>%
   arrange(desc(betas)) %>%
-  top_n(20) %>% 
+  top_n(20, betas) %>% 
   kbl() %>%
   kable_styling(bootstrap_options = "striped")
 

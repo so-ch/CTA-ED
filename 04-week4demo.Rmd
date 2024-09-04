@@ -76,7 +76,8 @@ Finally, we're going to convert these into a document feature matrix. We're doin
 dfmat <- dfm(tokens(c(sentence1,
                       sentence2,
                       sentence3)),
-             remove_punct = TRUE, remove = stopwords("english"))
+             remove_punct = TRUE) %>%
+  dfm_remove(stopwords("english"))
 
 dfmat
 ```
@@ -100,7 +101,7 @@ And you'll see that this is the same as what we would get if we manipulated the 
 test <- tidy(dfmat)
 test <- test %>%
   cast_dfm(term, document, count)
-test <- as.data.frame(test)
+test <- convert(test, to = "data.frame")
 
 res <- cor(test[,2:4])
 res

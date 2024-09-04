@@ -5,7 +5,7 @@
 First, we'll load the packages we'll be using in this week's brief demo. here we are pre-loading an already-estimated PMI matrix and results from the singular value decomposition approach.
 
 
-```r
+``` r
 library(Matrix) #for handling matrices
 library(tidyverse)
 library(irlba) # for SVD
@@ -70,14 +70,14 @@ We will then use the "Singular Value Decomposition" (SVD) techique. This is anot
 And to do this, we simply need to do the following.
 
 
-```r
+``` r
 pmi_svd <- irlba(pmi_matrix, 256, maxit = 500)
 ```
 
 After which we can collect our vectors for each word and inspect them. 
 
 
-```r
+``` r
 word_vectors <- pmi_svd$u
 rownames(word_vectors) <- rownames(pmi_matrix)
 dim(word_vectors)
@@ -87,7 +87,7 @@ dim(word_vectors)
 ## [1] 21172   256
 ```
 
-```r
+``` r
 head(word_vectors[1:5, 1:5])
 ```
 

@@ -81,9 +81,9 @@ tweets_corpus
 We are now ready to reformat the data into a document feature matrix.
 
 ```{r}
-dfmat <- dfm(tokens(tweets_corpus),
-             remove_punct = TRUE, 
-             remove = stopwords("english"))
+dfmat <- dfm(tokens(tweets_corpus,
+                    remove_punct = TRUE)) %>%
+  dfm_remove(stopwords("english"))
 
 dfmat
 ```

@@ -7,7 +7,7 @@ In this section, we'll have a quick overview of how we're processing text data w
 First we load the packages that we'll be using:
 
 
-```r
+``` r
 library(stringi) #to generate random text
 library(stringr) # to facilitate working with strings
 library(dplyr) #tidyverse package for wrangling data
@@ -22,20 +22,20 @@ library(kableExtra) #package for displaying data in html format (relevant for fo
 We'll first get some random text to see what it looks like when we're tokenizing text.
 
 
-```r
+``` r
 lipsum_text <- data.frame(text = stri_rand_lipsum(1, start_lipsum = TRUE))
 
 head(lipsum_text$text)
 ```
 
 ```
-## [1] "Lorem ipsum dolor sit amet, dictum platea, libero nisl volutpat, nulla. Pellentesque erat eu sociis, facilisi at nostra dis. Tristique non imperdiet in pretium curae pretium nullam. Nostra, tincidunt sociosqu placerat nascetur, placerat, cubilia accumsan, ex. Magna ipsum urna a praesent ridiculus, justo ut orci proin tortor ut. Vitae amet sed duis lorem mattis aliquet vivamus condimentum in. Taciti nisi mollis amet ut. Mattis vel accumsan tincidunt molestie et montes ad neque faucibus, curabitur curabitur diam habitasse. Tincidunt lorem sit vestibulum quis, sodales ad magna. Magna, phasellus purus suspendisse quis massa ante."
+## [1] "Lorem ipsum dolor sit amet, eros parturient eros efficitur at gravida. Volutpat auctor eu adipiscing ut sapien maecenas vitae lorem sollicitudin. Vivamus ullamcorper nec nec sodales molestie amet massa, orci egestas ornare eu. Pretium tempus mauris sodales ipsum molestie consequat imperdiet tortor. Bibendum dui sem sociis sit, dui donec pellentesque. Senectus lorem elementum habitant dui quis volutpat tempor. Nibh dictum nam, nibh a eu mattis scelerisque suscipit eget. Faucibus, aliquam massa in. Quam, mi est pulvinar viverra. Pulvinar, nam vitae nibh imperdiet massa efficitur consectetur. Maximus mus in egestas porta blandit, vestibulum quisque quisque."
 ```
 
 We can then tokenize with the `unnest_tokens()` function in `tidytext`. 
 
 
-```r
+``` r
 tokens <- lipsum_text %>%
   unnest_tokens(word, text)
 
@@ -43,19 +43,19 @@ head(tokens)
 ```
 
 ```
-##     word
-## 1  lorem
-## 2  ipsum
-## 3  dolor
-## 4    sit
-## 5   amet
-## 6 dictum
+##    word
+## 1 lorem
+## 2 ipsum
+## 3 dolor
+## 4   sit
+## 5  amet
+## 6  eros
 ```
 
 Now we'll get some larger data, simulating 5000 observations (rows) of random Latin text strings. 
 
 
-```r
+``` r
 ## Varying total words example
 lipsum_text <- data.frame(text = stri_rand_lipsum(5000, start_lipsum = TRUE))
 ```
@@ -63,7 +63,7 @@ lipsum_text <- data.frame(text = stri_rand_lipsum(5000, start_lipsum = TRUE))
 We'll then add another column and call this "weeks." This will be our unit of analysis. 
 
 
-```r
+``` r
 # make some weeks one to ten
 lipsum_text$week <- as.integer(rep(seq.int(1:10), 5000/10))
 ```
@@ -71,7 +71,7 @@ lipsum_text$week <- as.integer(rep(seq.int(1:10), 5000/10))
 Now we'll simulate a trend where we see an increasing number of words as weeks go by. Don't worry too much about this as the code is a little more complex, but I share it here in case of interest.
 
 
-```r
+``` r
 for(i in 1:nrow(lipsum_text)) {
   week <- lipsum_text[i, 2]
   morewords <-
@@ -85,7 +85,7 @@ for(i in 1:nrow(lipsum_text)) {
 And we can see that as each week goes by, we have more and more text.
 
 
-```r
+``` r
 lipsum_text %>%
   unnest_tokens(word, text) %>%
   group_by(week) %>%
@@ -103,7 +103,7 @@ lipsum_text %>%
 We can then do the same but with a trend where each week sees a decreasing number of words.
 
 
-```r
+``` r
 # simulate decreasing words trend
 lipsum_text <- data.frame(text = stri_rand_lipsum(5000, start_lipsum = TRUE))
 
@@ -135,7 +135,7 @@ lipsum_text %>%
 Now let's check out the top frequency words in this text.
 
 
-```r
+``` r
 lipsum_text %>%
   unnest_tokens(word, text) %>%
   dplyr::count(word, sort = T) %>%
@@ -148,7 +148,7 @@ lipsum_text %>%
 ## Selecting by n
 ```
 
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-striped" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> word </th>
@@ -158,23 +158,23 @@ lipsum_text %>%
 <tbody>
   <tr>
    <td style="text-align:left;"> lipsum </td>
-   <td style="text-align:right;"> 69879 </td>
+   <td style="text-align:right;"> 72192 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> more </td>
-   <td style="text-align:right;"> 69879 </td>
+   <td style="text-align:right;"> 72192 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> words </td>
-   <td style="text-align:right;"> 65094 </td>
+   <td style="text-align:right;"> 67414 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sed </td>
-   <td style="text-align:right;"> 17639 </td>
+   <td style="text-align:right;"> 17678 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> in </td>
-   <td style="text-align:right;"> 12681 </td>
+   <td style="text-align:right;"> 12334 </td>
   </tr>
 </tbody>
 </table>
@@ -184,7 +184,7 @@ We're going to check out the frequencies for the word "sed" and then we're gonna
 First we need to get total word frequencies for each week.
 
 
-```r
+``` r
 lipsum_totals <- lipsum_text %>%
   group_by(week) %>%
   unnest_tokens(word, text) %>%
@@ -194,7 +194,7 @@ lipsum_totals <- lipsum_text %>%
 ```
 
 
-```r
+``` r
 # let's look for "sed"
 lipsum_sed <- lipsum_text %>%
   group_by(week) %>%
@@ -208,7 +208,7 @@ lipsum_sed <- lipsum_text %>%
 Then we can join these two dataframes together with the `left_join()` function where we're joining by the "week" column. We can then pipe the joined data into a plot.
 
 
-```r
+``` r
 lipsum_sed %>%
   left_join(lipsum_totals, by = "week") %>%
   mutate(sed_prop = total_sed/total) %>%
@@ -239,7 +239,7 @@ Several other patterns match multiple characters. These include:
     is not a decimal digit.
 
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\d+")
 ```
 
@@ -248,7 +248,7 @@ str_extract_all("1 + 2 = 3", "\\d+")
 ## [1] "1" "2" "3"
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\D+")
 ```
 
@@ -260,7 +260,7 @@ str_extract_all("1 + 2 = 3", "\\D+")
 *   `\s`: matches any whitespace; its opposite is `\S`
     
 
-```r
+``` r
 (text <- "Some  \t badly\n\t\tspaced \f text")
 ```
 
@@ -268,7 +268,7 @@ str_extract_all("1 + 2 = 3", "\\D+")
 ## [1] "Some  \t badly\n\t\tspaced \f text"
 ```
 
-```r
+``` r
 str_replace_all(text, "\\s+", " ")
 ```
 
@@ -279,7 +279,7 @@ str_replace_all(text, "\\s+", " ")
 *   `^`: matches start of the string
     
 
-```r
+``` r
 x <- c("apple", "banana", "pear")
 str_extract(x, "^a")
 ```
@@ -290,7 +290,7 @@ str_extract(x, "^a")
 *   `$`: matches end of the string
     
 
-```r
+``` r
 x <- c("apple", "banana", "pear")
 str_extract(x, "^a$")
 ```
@@ -302,7 +302,7 @@ str_extract(x, "^a$")
 *   `^` then `$`: exact string match
     
 
-```r
+``` r
 x <- c("apple", "banana", "pear")
 str_extract(x, "^apple$")
 ```
@@ -320,7 +320,7 @@ Hold up: what do the plus signs etc. mean?
 So if you can tell me why this output makes sense, you're getting there!
 
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\d+")[[1]]
 ```
 
@@ -328,7 +328,7 @@ str_extract_all("1 + 2 = 3", "\\d+")[[1]]
 ## [1] "1" "2" "3"
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\D+")[[1]]
 ```
 
@@ -336,7 +336,7 @@ str_extract_all("1 + 2 = 3", "\\D+")[[1]]
 ## [1] " + " " = "
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\d*")[[1]]
 ```
 
@@ -344,7 +344,7 @@ str_extract_all("1 + 2 = 3", "\\d*")[[1]]
 ##  [1] "1" ""  ""  ""  "2" ""  ""  ""  "3" ""
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\D*")[[1]]
 ```
 
@@ -352,7 +352,7 @@ str_extract_all("1 + 2 = 3", "\\D*")[[1]]
 ## [1] ""    " + " ""    " = " ""    ""
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\d?")[[1]]
 ```
 
@@ -360,7 +360,7 @@ str_extract_all("1 + 2 = 3", "\\d?")[[1]]
 ##  [1] "1" ""  ""  ""  "2" ""  ""  ""  "3" ""
 ```
 
-```r
+``` r
 str_extract_all("1 + 2 = 3", "\\D?")[[1]]
 ```
 

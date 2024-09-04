@@ -1,7 +1,7 @@
 ---
 title: "Computational Text Analysis"
 author: "Marion Lieutaud"
-date: "2024-01-15"
+date: "2024-09-04"
 site: bookdown::bookdown_site
 output: bookdown::bs4_book
 documentclass: book
@@ -27,7 +27,7 @@ The course is structured of alternating weeks of substantive and technical instr
 
 | Week | Focus                                        | Coding assignment(s)                                                                                                                                                              | Class activity                                                                                                             |
 |------|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| 1    | Retrieving and analyzing text information    | [Introductory exercises](https://marionlieutaud.github.io/CTA-ED/introduction-to-r.html) + [RTC Workshop by Ugur Ozdemir](https://research-training-centre.sps.ed.ac.uk/micro-methods/) | Seminar discussion                                                                                                         |
+| 1    | Retrieving and analyzing text information    | [Introductory exercises](https://marionlieutaud.github.io/CTA-ED/introduction-to-r.html) + [RTC Workshop by Ugur Ozdemir](https://research-training-centre.sps.ed.ac.uk/micro-methods/) | Seminar discussion                                           |
 | 2    | Tokenization and word frequencies            | [Demo](https://marionlieutaud.github.io/CTA-ED/week-2-demo.html)                                                                                                                        | Seminar discussion                                                                                                         |
 | 3    | Dictionary-based techniques                  | [Demo](https://marionlieutaud.github.io/CTA-ED/week-3-demo.html) + [Exercise 2](https://marionlieutaud.github.io/CTA-ED/exercise-2-dictionary-based-methods.html)                             | Flash talk + [Exercise 1](https://marionlieutaud.github.io/CTA-ED/exercise-1-word-frequency-analysis.html) group work            |
 | 4    | Natural language, complexity, and similarity | [Demo](https://marionlieutaud.github.io/CTA-ED/week-4-demo.html)                                                                                                                        | Coding demo of Exercise 2 + Seminar discussion                                                                             |
@@ -35,8 +35,9 @@ The course is structured of alternating weeks of substantive and technical instr
 | 6    | Unsupervised learning (topic models)         | [Demo](https://marionlieutaud.github.io/CTA-ED/week-6-demo.html)                                                                                                                        | Coding demo of Exercise 4 + Seminar discussion                                                                             |
 | 7    | Unsupervised learning (word embedding)       | [Demo](https://marionlieutaud.github.io/CTA-ED/week-7-demo.html) + [Exercise 6](https://marionlieutaud.github.io/CTA-ED/exercise-6-unsupervised-learning-word-embedding.html)                 | Flash talk + [Exercise 5](https://marionlieutaud.github.io/CTA-ED/exercise-5-unsupervised-learning-topic-models.html) group work |
 | 8    | Sampling text information                    | [Demo](https://marionlieutaud.github.io/CTA-ED/week-8-demo.html)                                                                                                                        | Coding demo of Exercise 6 + Seminar discussion                                                                             |
-| 9    | Supervised learning                          | Demo + Exercise 8                                                                                                                                                                 | Flash talk + [Exercise 7](https://marionlieutaud.github.io/CTA-ED/exercise-7-sampling-text-information.html) group work          |
-| 10   | Validation                                   | Demo + Exercise 9                                                                                                                                                                 | ~~Coding demo of Exercise 8~~ + Seminar discussion                                                                         |
+| 9    | Supervised learning                          | Demo + Exercise 8                                                                                                                                                                             | Flash talk + [Exercise 7](https://marionlieutaud.github.io/CTA-ED/exercise-7-sampling-text-information.html) group work |
+| 10   | Validation                                   | Demo + Exercise 9                                                                                                                                                                     | Coding demo of Exercise 8 + Seminar discussion                                                                          |
+|------|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 
 ## Acknowledgments {.unnumbered}
 

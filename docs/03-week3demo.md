@@ -7,7 +7,7 @@ In this section, we'll have a quick overview of how we're processing text data w
 We'll first load the packages we need. 
 
 
-```r
+``` r
 library(stringi)
 library(dplyr)
 library(tidytext)
@@ -26,7 +26,7 @@ I have simulated a dataset of text split by weeks, students, and words plus whet
 We have three datasets: one with a constant number of "happy" words; one with an increasing number of "happy" words; and one with a decreasing number of "happy" words. These are called: `happyn`, `happyu`, and `happyd` respectively.
 
 
-```r
+``` r
 head(happyn)
 ```
 
@@ -35,15 +35,15 @@ head(happyn)
 ## # Groups:   week, student [1]
 ##    week student word  happy
 ##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 sed       0
+## 1     1      18 lorem     0
+## 2     1      18 ipsum     0
+## 3     1      18 dolor     0
+## 4     1      18 sit       0
+## 5     1      18 amet      0
+## 6     1      18 eu        0
 ```
 
-```r
+``` r
 head(happyu)
 ```
 
@@ -52,15 +52,15 @@ head(happyu)
 ## # Groups:   week, student [1]
 ##    week student word  happy
 ##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 sed       0
+## 1     1      18 lorem     0
+## 2     1      18 ipsum     0
+## 3     1      18 dolor     0
+## 4     1      18 sit       0
+## 5     1      18 amet      0
+## 6     1      18 eu        0
 ```
 
-```r
+``` r
 head(happyd)
 ```
 
@@ -69,12 +69,12 @@ head(happyd)
 ## # Groups:   week, student [1]
 ##    week student word  happy
 ##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 sed       0
+## 1     1      18 lorem     0
+## 2     1      18 ipsum     0
+## 3     1      18 dolor     0
+## 4     1      18 sit       0
+## 5     1      18 amet      0
+## 6     1      18 eu        0
 ```
 
 We can then see the trend in "happy" words over by week and student.
@@ -88,6 +88,8 @@ First, the dataset where we have a constant number of happy words over time.
 ## ℹ Please use `reframe()` instead.
 ## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
 ##   always returns an ungrouped data frame and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
 ```
 
 ```
@@ -107,6 +109,8 @@ And now the simulated data with an increasing number of happy words.
 ## ℹ Please use `reframe()` instead.
 ## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
 ##   always returns an ungrouped data frame and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
 ```
 
 ```
@@ -126,6 +130,8 @@ And finally a decreasing number of happy words.
 ## ℹ Please use `reframe()` instead.
 ## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
 ##   always returns an ungrouped data frame and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
 ```
 
 ```
@@ -153,7 +159,7 @@ The first of these also has the *same* number of total words each week. The seco
 Again, as you see below, we're splitting by week, student, word, and whether or not it is a "happy" word. 
 
 
-```r
+``` r
 head(happylipsumn)
 ```
 
@@ -162,32 +168,32 @@ head(happylipsumn)
 ## # Groups:   week, student [1]
 ##    week student word  happy
 ##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 dolor     0
+## 1     1      18 lorem     0
+## 2     1      18 ipsum     0
+## 3     1      18 dolor     0
+## 4     1      18 sit       0
+## 5     1      18 amet      0
+## 6     1      18 ipsum     0
 ```
 
-```r
+``` r
 head(happylipsumu)
 ```
 
 ```
 ## # A tibble: 6 × 4
 ## # Groups:   week, student [1]
-##    week student word  happy
-##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 in        0
+##    week student word      happy
+##   <int>   <int> <chr>     <int>
+## 1     1      18 lorem         0
+## 2     1      18 ipsum         0
+## 3     1      18 dolor         0
+## 4     1      18 sit           0
+## 5     1      18 amet          0
+## 6     1      18 habitasse     0
 ```
 
-```r
+``` r
 head(happylipsumd)
 ```
 
@@ -196,12 +202,12 @@ head(happylipsumd)
 ## # Groups:   week, student [1]
 ##    week student word  happy
 ##   <int>   <int> <chr> <int>
-## 1     1      10 lorem     0
-## 2     1      10 ipsum     0
-## 3     1      10 dolor     0
-## 4     1      10 sit       0
-## 5     1      10 amet      0
-## 6     1      10 ex        0
+## 1     1      18 lorem     0
+## 2     1      18 ipsum     0
+## 3     1      18 dolor     0
+## 4     1      18 sit       0
+## 5     1      18 amet      0
+## 6     1      18 sed       0
 ```
 
 Then if we plot the number of happy words *divided* by the number of total words each week for each student in each of these datasets, we get the below. 
@@ -211,7 +217,7 @@ To get this normalized sentiment score--or "happy" score--we need to create a va
 We can do this in the following way. 
 
 
-```r
+``` r
 happylipsumn %>%
     group_by(week, student) %>%
     mutate(index_total = n()) %>%
@@ -228,6 +234,8 @@ happylipsumn %>%
 ## ℹ Please use `reframe()` instead.
 ## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
 ##   always returns an ungrouped data frame and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
 ```
 
 ```
@@ -240,17 +248,17 @@ happylipsumn %>%
 ## # Groups:   week, student [300]
 ##     week student sum_hap index_total prop_hap
 ##    <int>   <int>   <int>       <int>    <dbl>
-##  1     1       1     638        2889    0.221
-##  2     1       2     899        3966    0.227
-##  3     1       3    1102        4964    0.222
-##  4     1       4    1006        4583    0.220
-##  5     1       5    1222        4952    0.247
-##  6     1       6     926        4485    0.206
-##  7     1       7    1519        5763    0.264
-##  8     1       8     817        3795    0.215
-##  9     1       9     660        3434    0.192
-## 10     1      10     498        2672    0.186
-## # … with 290 more rows
+##  1     1       1    1055        5273    0.200
+##  2     1       2     886        4439    0.200
+##  3     1       3    1072        5283    0.203
+##  4     1       4     728        3885    0.187
+##  5     1       5     907        4492    0.202
+##  6     1       6     642        3775    0.170
+##  7     1       7    1091        5037    0.217
+##  8     1       8     971        4237    0.229
+##  9     1       9     440        1861    0.236
+## 10     1      10    1258        5186    0.243
+## # ℹ 290 more rows
 ```
 
 Then if we repeat this for each of our datasets and plot we see the following.
