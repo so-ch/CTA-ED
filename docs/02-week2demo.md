@@ -29,7 +29,7 @@ head(lipsum_text$text)
 ```
 
 ```
-## [1] "Lorem ipsum dolor sit amet, eget dictumst purus massa vel. Accumsan justo consectetur sed quam est, egestas ultricies cras proin id sed. Purus porta ut. Augue amet, integer turpis in at est magnis ac iaculis egestas, senectus. Quam vitae pulvinar efficitur risus in magna nibh pellentesque placerat ut, vitae sed. Tincidunt sodales, fusce magna ridiculus pharetra sed, diam cum dis mollis. Eu conubia, parturient tellus augue sed at et et tristique, magna blandit, sed. Habitasse dui, tempus congue mauris, sed a neque sed sit."
+## [1] "Lorem ipsum dolor sit amet, eget, ut curabitur aliquam in id. Sit platea, cursus sit nulla in, fames diam. Sapien nisi commodo libero praesent quam luctus vivamus nostra. Turpis, sodales, cum pellentesque eget turpis morbi id in sit phasellus, nibh enim. Libero integer accumsan, elementum ullamcorper vivamus ac eros, augue sed ut. Praesent cras aliquam praesent sed eget erat, venenatis sociis. Duis ante imperdiet nec condimentum varius mauris purus, montes, et ut metus taciti ac etiam. Purus, consectetur phasellus et amet fringilla. Imperdiet interdum aptent ut et tempus. Ut tellus sapien habitant tempor elit ultrices, in, sociis. Vestibulum, conubia quis semper quisque faucibus ipsum vitae gravida malesuada. Et platea laoreet, dapibus ut sed dapibus in accumsan nostra. Tortor quam tellus nascetur ridiculus amet cum pretium ut rutrum placerat. In nulla taciti donec massa quisque ligula faucibus eu."
 ```
 
 We can then tokenize with the `unnest_tokens()` function in `tidytext`. 
@@ -158,23 +158,23 @@ lipsum_text %>%
 <tbody>
   <tr>
    <td style="text-align:left;"> lipsum </td>
-   <td style="text-align:right;"> 71521 </td>
+   <td style="text-align:right;"> 73103 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> more </td>
-   <td style="text-align:right;"> 71521 </td>
+   <td style="text-align:right;"> 73103 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> words </td>
-   <td style="text-align:right;"> 66771 </td>
+   <td style="text-align:right;"> 68321 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sed </td>
-   <td style="text-align:right;"> 17718 </td>
+   <td style="text-align:right;"> 17646 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> in </td>
-   <td style="text-align:right;"> 12517 </td>
+   <td style="text-align:right;"> 12503 </td>
   </tr>
 </tbody>
 </table>
