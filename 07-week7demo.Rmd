@@ -9,6 +9,9 @@ library(Matrix) #for handling matrices
 library(tidyverse)
 library(irlba) # for SVD
 library(umap) # for dimensionality reduction
+library(widyr)
+library(tidytext)
+library(dplyr)
 
 load("data/wordembed/pmi_svd.RData")
 load("data/wordembed/pmi_matrix.RData")
